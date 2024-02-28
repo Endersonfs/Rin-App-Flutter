@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rinapp/Views/Screen/signIn.dart';
+import 'package:rinapp/Views/Screen/root_page.dart';
 import 'package:rinapp/constants.dart';
 
 class OnboardingScreen extends StatefulWidget
@@ -29,12 +29,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             child: InkWell(
               onTap: () {
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => const SignIn()));
+                    context, MaterialPageRoute(builder: (_) => const RootPage()));
               }, //to login screen. We will update later
               child: const Text(
                 'Skip',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color.fromARGB(255, 104, 103, 103),
                   fontSize: 16.0,
                   fontWeight: FontWeight.w400,
                 ),
@@ -54,17 +54,17 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             },
             controller: _pageController,
             children: [
-              createPage(
+              CreatePage(
                 image: 'assets/images/plant-one.png',
                 title: Constant.titleOne,
                 description: Constant.descriptionOne,
               ),
-              createPage(
+              CreatePage(
                 image: 'assets/images/plant-two.png',
                 title: Constant.titleTwo,
                 description: Constant.descriptionTwo,
               ),
-              createPage(
+              CreatePage(
                 image: 'assets/images/plant-three.png',
                 title: Constant.titleThree,
                 description: Constant.descriptionThree,
@@ -82,6 +82,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             bottom: 60,
             right: 30,
             child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Constant.primaryColor,                
+              ),
               child: IconButton(
                   onPressed: () {
                     setState(() {
@@ -94,7 +99,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         }
                       } else {
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) => const SignIn()));
+                            MaterialPageRoute(builder: (_) => const RootPage()));
                       }
                     });
                   },
@@ -103,11 +108,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     size: 24,
                     color: Colors.white,
                   )),
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Constant.primaryColor,
-              ),
             ),
           ),
         ],
@@ -147,12 +147,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   }
 }
 
-class createPage extends StatelessWidget {
+class CreatePage extends StatelessWidget {
   final String image;
   final String title;
   final String description;
 
-  const createPage({
+  const CreatePage({
     Key? key,
     required this.image,
     required this.title,
@@ -177,7 +177,7 @@ class createPage extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Constant.primaryColor,
+              color: Constant.blackColor,
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
@@ -191,7 +191,7 @@ class createPage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Colors.grey,
+              color: Color.fromARGB(255, 104, 103, 103),
             ),
           ),
           const SizedBox(
