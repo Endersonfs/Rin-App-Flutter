@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:rinapp/Models/Empleyee.dart';
 import 'package:rinapp/Models/plants.dart';
+import 'package:rinapp/Models/service.dart';
+import 'package:rinapp/Models/workrequest.dart';
 import 'package:rinapp/Views/Screen/detail_page.dart';
-import 'package:rinapp/Views/widget/plant_widget.dart';
+import 'package:rinapp/Views/widget/WorkRequest/quotation_widget.dart';
 import 'package:rinapp/constants.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,15 +23,10 @@ class _HomePageState extends State<HomePage> {
     Size size = MediaQuery.of(context).size;
 
     List<Plant> _plantList = Plant.plantList;
-
-    //Plants category
-    List<String> _plantTypes = [
-      'Legales',
-      'Electricidad',
-      'Gomero',
-      'Paseo de perro',
-    ];
-    
+    List<Service> _serviceList = Service.serviceList;
+    List<WorkRequest> _workRequestList = WorkRequest.getWorkRequestByCustomerId(Guid('4b855768-0ee2-4396-93f9-17a9ff541c2f'));
+    List<Employee> _employeeList = WorkRequest.getWorkRequestByQuotations(Guid('4b855768-0ee2-4396-93f9-17a9ff541c2f'));
+       
     //list of the pages titles services
     List<String> _serviceType= 
     [
@@ -49,7 +48,26 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          Container(//Title First Secction
+            padding: const EdgeInsets.only(left: 16, bottom: 5, top: 25),
+            child: const Text(
+              'Hola, Enderson',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+          Container(//Title second secction
+            padding: const EdgeInsets.only(left: 16, bottom: 5, top: 0),
+            child: const Text(
+              '¿Qué servicio necesitas?',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+          ),
+          Container(//Buscador
             padding: const EdgeInsets.only(top: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -90,42 +108,55 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            height: 50.0,
-            width: size.width,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _serviceType.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                      child: Text(
-                        _serviceType[index],
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: selectedIndex == index
-                              ? FontWeight.bold
-                              : FontWeight.w300,
-                          color: selectedIndex == index
-                              ? Constant.primaryColor
-                              : Constant.blackColor,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
+          Container(//Title second secction
+            padding: const EdgeInsets.only(left: 16, bottom: 5, top: 20),
+            child: const Text(
+              'Categorías',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+              ),
+            ),
           ),
-          SizedBox(
+          // Container(//list Category
+          //   padding: const EdgeInsets.symmetric(horizontal: 12),
+          //   height: 50.0,
+          //   width: size.width,
+          //   child: ListView.builder(
+          //       scrollDirection: Axis.horizontal,
+          //       itemCount: _serviceType.length,
+          //       itemBuilder: (BuildContext context, int index) {
+          //         return Padding(
+          //           padding: const EdgeInsets.all(8.0),
+          //           child: GestureDetector(
+          //             onTap: () {
+          //               setState(() {
+          //                 selectedIndex = index;
+          //               });
+          //             },
+          //             child: Text(
+          //               _serviceType[index],
+          //               style: TextStyle(
+          //                 fontSize: 16.0,
+          //                 fontWeight: selectedIndex == index
+          //                     ? FontWeight.bold
+          //                     : FontWeight.w300,
+          //                 color: selectedIndex == index
+          //                     ? Constant.primaryColor
+          //                     : Constant.blackColor,
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       }),
+          // ),
+          Container(//space
+            padding: const EdgeInsets.only(left: 16, bottom: 20),
+          ),
+          SizedBox(//Card Service
             height: size.height * .3,
             child: ListView.builder(
-                itemCount: _plantList.length,
+                itemCount: _serviceList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -134,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                           context,
                           PageTransition(
                               child: DetailPage(
-                                plantId: _plantList[index].plantId,
+                                plantId: _serviceList[index].serviceId,
                               ),
                               type: PageTransitionType.bottomToTop));
                     },
@@ -157,22 +188,22 @@ class _HomePageState extends State<HomePage> {
                                 color: Constant.secondaryColor,
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    bool isFavorited = toggleIsFavorated(
-                                        _plantList[index].isFavorated);
-                                    _plantList[index].isFavorated = isFavorited;
-                                  });
-                                },
-                                icon: Icon(
-                                  _plantList[index].isFavorated == true
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: Colors.white,
-                                ),
-                                iconSize: 30,
-                              ),
+                              // child: IconButton(
+                              //   onPressed: () {
+                              //     setState(() {
+                              //       bool isFavorited = toggleIsFavorated(
+                              //           _serviceList[index].isFavorated);
+                              //       _serviceList[index].isFavorated = isFavorited;
+                              //     });
+                              //   },
+                              //   icon: Icon(
+                              //     _serviceList[index].isFavorated == true
+                              //         ? Icons.favorite
+                              //         : Icons.favorite_border,
+                              //     color: Colors.white,
+                              //   ),
+                              //   iconSize: 30,
+                              // ),
                             ),
                           ),
                           Positioned(
@@ -180,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                             right: 50,
                             top: 50,
                             bottom: 50,
-                            child: Image.asset(_plantList[index].imageURL),
+                            child: Image.asset(_serviceList[index].iconService),
                           ),
                           Positioned(
                             bottom: 15,
@@ -189,14 +220,14 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  _plantList[index].category,
+                                  _serviceList[index].category,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
                                   ),
                                 ),
                                 Text(
-                                  _plantList[index].plantName,
+                                  _serviceList[index].serviceName,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -206,34 +237,34 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          Positioned(
-                            bottom: 15,
-                            right: 20,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: Constant.blackColor,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                r'$' + _plantList[index].price.toString(),
-                                style: TextStyle(
-                                    color: Constant.primaryColor,
-                                    fontSize: 16),
-                              ),
-                            ),
-                          ),
+                          // Positioned(//boton de precio para el card
+                          //   bottom: 15,
+                          //   right: 20,
+                          //   child: Container(
+                          //     padding: const EdgeInsets.symmetric(
+                          //         horizontal: 10, vertical: 2),
+                          //     decoration: BoxDecoration(
+                          //       color: Constant.blackColor,
+                          //       borderRadius: BorderRadius.circular(20),
+                          //     ),
+                          //     child: Text(
+                          //       r'$' + _serviceList[index].price.toString(),
+                          //       style: TextStyle(
+                          //           color: Constant.primaryColor,
+                          //           fontSize: 16),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
                   );
                 }),
           ),
-          Container(
+          Container(//Title second secction
             padding: const EdgeInsets.only(left: 16, bottom: 20, top: 20),
             child: const Text(
-              'Cotizaciones',
+              'Recomendado',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18.0,
@@ -244,7 +275,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             height: size.height * .5,
             child: ListView.builder(
-                itemCount: _plantList.length,
+                itemCount: _employeeList.length,
                 scrollDirection: Axis.vertical,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
@@ -252,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: (){
                         Navigator.push(context, PageTransition(child: DetailPage(plantId: _plantList[index].plantId), type: PageTransitionType.bottomToTop));
                       },
-                      child: PlantWidget(index: index, plantList: _plantList));
+                      child: QuotationWidget(index: index, employeeList: _employeeList));
                 }),
           ),
         ],

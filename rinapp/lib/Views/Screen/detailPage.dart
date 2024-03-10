@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 import 'package:rinapp/Models/service.dart';
+import 'package:rinapp/Models/workrequest.dart';
 import 'package:rinapp/constants.dart';
 
 
-class DetailPage extends StatefulWidget {
-  final int plantId;
-  const DetailPage({Key? key, required this.plantId}) : super(key: key);
+class DetailPageService extends StatefulWidget {
+  final Guid employeeId;
+  const DetailPageService({Key? key, required this.employeeId}) : super(key: key);
 
   @override
-  State<DetailPage> createState() => _DetailPageState();
+  State<DetailPageService> createState() => _DetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetailPageState extends State<DetailPageService> {
   //Toggle Favorite button
   bool toggleIsFavorated(bool isFavorited) {
     return !isFavorited;
@@ -27,7 +29,7 @@ class _DetailPageState extends State<DetailPage> {
     Size size = MediaQuery.of(context).size;
     // List<Plant> _serviceList = Plant.plantList;
 
-    List<Service> _serviceList = Service.serviceList;
+    List<WorkRequest> _serviceList = WorkRequest.workRequestList;
 
     return Scaffold(
       body: Stack(
@@ -67,20 +69,21 @@ class _DetailPageState extends State<DetailPage> {
                       borderRadius: BorderRadius.circular(25),
                       color: Constant.primaryColor.withOpacity(.15),
                     ),
-                    child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            bool isFavorited = toggleIsFavorated(
-                            _serviceList[widget.plantId].isFavorated);
-                            // _serviceList[widget.plantId].isFavorated =  isFavorited;
-                          });
-                        },
-                        icon: Icon(
-                          _serviceList[widget.plantId].isFavorated == true
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: Constant.primaryColor,
-                        )),
+                    // child: IconButton(
+                    //     onPressed: () {
+                    //       // setState(() {
+                    //       //   bool isFavorited = toggleIsFavorated(
+                    //       //       _serviceList[widget.employeeId].isFavorated);
+                    //       //   _serviceList[widget.employeeId].isFavorated =
+                    //       //       isFavorited;
+                    //       // });
+                    //     },
+                    //     icon: Icon(
+                    //       _serviceList[widget.employeeId].isFavorated == true
+                    //           ? Icons.favorite
+                    //           : Icons.favorite_border,
+                    //       color: Constant.primaryColor,
+                    //     )),
                   ),
                 ),
               ],
@@ -101,7 +104,7 @@ class _DetailPageState extends State<DetailPage> {
                     left: 0,
                     child: SizedBox(
                       height: 350,
-                      child: Image.asset(_serviceList[widget.plantId].imageURL),
+                      child: Image.asset(_serviceList[0].urlImage),
                     ),
                   ),
                   Positioned(
@@ -115,18 +118,18 @@ class _DetailPageState extends State<DetailPage> {
                         children: [
                           PlantFeature(
                             title: 'Size',
-                            plantFeature: _serviceList[widget.plantId].size,
+                            plantFeature: _serviceList[0].category,
                           ),
                           PlantFeature(
                             title: 'Humidity',
                             plantFeature:
-                                _serviceList[widget.plantId].humidity.toString(),
+                                _serviceList[0].state.toString(),
                           ),
-                          PlantFeature(
-                            title: 'Temperature',
-                            plantFeature:
-                                _serviceList[widget.plantId].temperature,
-                          ),
+                          // PlantFeature(
+                          //   title: 'Temperature',
+                          //   plantFeature:
+                          //       _serviceList[widget.employeeId].temperature,
+                          // ),
                         ],
                       ),
                     ),
@@ -161,7 +164,7 @@ class _DetailPageState extends State<DetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _serviceList[widget.plantId].serviceName,
+                            _serviceList[0].serviceName,
                             style: TextStyle(
                               color: Constant.primaryColor,
                               fontWeight: FontWeight.bold,
@@ -172,7 +175,7 @@ class _DetailPageState extends State<DetailPage> {
                             height: 10,
                           ),
                           Text(
-                            r'$' + _serviceList[widget.plantId].price.toString(),
+                            r'$' + _serviceList[0].price.toString(),
                             style: TextStyle(
                               color: Constant.blackColor,
                               fontSize: 24.0,
@@ -184,7 +187,7 @@ class _DetailPageState extends State<DetailPage> {
                       Row(
                         children: [
                           Text(
-                            _serviceList[widget.plantId].rating.toString(),
+                            _serviceList[0].state.toString(),
                             style: TextStyle(
                               fontSize: 30.0,
                               color: Constant.primaryColor,
@@ -204,7 +207,7 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Expanded(
                     child: Text(
-                      _serviceList[widget.plantId].decription,
+                      _serviceList[0].description,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         height: 1.5,
@@ -224,30 +227,30 @@ class _DetailPageState extends State<DetailPage> {
         height: 50,
         child: Row(
           children: [
-            Container(
-              height: 50,
-              width: 50,
-              child: IconButton(onPressed: (){
-                setState(() {
-                  bool isSelected = toggleIsSelected(_serviceList[widget.plantId].isSelected);
+            // Container(
+            //   height: 50,
+            //   width: 50,
+            //   child: IconButton(onPressed: (){
+            //     setState(() {
+            //       bool isSelected = toggleIsSelected(_serviceList[widget.employeeId].isSelected);
 
-                  // _serviceList[widget.plantId].isSelected = isSelected;
-                });
-              }, icon: Icon(
-                Icons.shopping_cart,
-                color: _serviceList[widget.plantId].isSelected == true ? Colors.white : Constant.primaryColor,
-              )),
-              decoration: BoxDecoration(
-                  color: _serviceList[widget.plantId].isSelected == true ? Constant.primaryColor.withOpacity(.5) : Colors.white,
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(0, 1),
-                      blurRadius: 5,
-                      color: Constant.primaryColor.withOpacity(.3),
-                    ),
-                  ]),
-            ),
+            //       // _serviceList[widget.employeeId].isSelected = isSelected;
+            //     });
+            //   }, icon: Icon(
+            //     Icons.shopping_cart,
+            //     color: _serviceList[widget.employeeId].isSelected == true ? Colors.white : Constant.primaryColor,
+            //   )),
+            //   decoration: BoxDecoration(
+            //       color: _serviceList[widget.employeeId].isSelected == true ? Constant.primaryColor.withOpacity(.5) : Colors.white,
+            //       borderRadius: BorderRadius.circular(50),
+            //       boxShadow: [
+            //         BoxShadow(
+            //           offset: const Offset(0, 1),
+            //           blurRadius: 5,
+            //           color: Constant.primaryColor.withOpacity(.3),
+            //         ),
+            //       ]),
+            // ),
             const SizedBox(
               width: 20,
             ),
